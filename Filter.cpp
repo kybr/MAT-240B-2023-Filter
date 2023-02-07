@@ -62,6 +62,7 @@ class History {
   float _data = 0;
 
  public:
+  void zero() { _data = 0; }
   float operator()(float in) {
     float value = _data;
     _data = in;
@@ -86,6 +87,10 @@ class StateVariableFilter {
   float _low = 0;
 
  public:
+  void reset() {
+    z1.zero();
+    z2.zero();
+  }
   void step(float in, float wct, float q) {
     _mid = z2();
     float mul_3 = z2() * -q;
@@ -181,7 +186,12 @@ class KarplusStrong : public juce::AudioProcessor {
       // filter.lpf(mtof(note->get()), q->get(), (float)getSampleRate());
       // left[i] = filter((left[i] + right[i]) / 2) * dbtoa(gain->get());
       filter.step((left[i] + right[i]) / 2, note->get() / 127, q->get());
-      left[i] = filter.low();
+      float f = filter.low();
+      if (std::isnan(f)) {
+        filter.reset();
+        f = filter.low();
+      }
+      left[i] = f;
       right[i] = left[i];
     }
   }
