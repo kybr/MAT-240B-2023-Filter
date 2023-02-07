@@ -105,6 +105,10 @@ class StateVariableFilter {
     // float z2 = history_2_next_12;
     z1(add_5);
     z2(add_10);
+    // for a clearer implementation, go here:
+    // https://github.com/JordanTHarris/VAStateVariableFilter/blob/master/Source/Effects/VAStateVariableFilter.cpp
+    // of maybe look at this:
+    // https://github.com/JamesWenlock/StateVariableFilter/blob/master/Source/PluginProcessor.cpp
   }
 
   float high() { return _high; }
